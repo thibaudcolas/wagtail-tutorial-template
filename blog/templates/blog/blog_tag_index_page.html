@@ -1,24 +1,26 @@
-{% templatetag openblock %} extends "base.html" {% templatetag closeblock %}
-{% templatetag openblock %} load wagtailcore_tags {% templatetag closeblock %}
+{% verbatim %}
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
 
-{% templatetag openblock %} block content {% templatetag closeblock %}
+{% block content %}
 
-    {% templatetag openblock %} if request.GET.tag {% templatetag closeblock %}
-        <h4>Showing pages tagged "{% templatetag openvariable %} request.GET.tag {% templatetag closevariable %}"</h4>
-    {% templatetag openblock %} endif {% templatetag closeblock %}
+    {% if request.GET.tag %}
+        <h4>Showing pages tagged "{{ request.GET.tag }}"</h4>
+    {% endif %}
 
-    {% templatetag openblock %} for blogpage in blogpages {% templatetag closeblock %}
+    {% for blogpage in blogpages %}
 
           <p>
-              <strong><a href="{% templatetag openblock %} pageurl blogpage {% templatetag closeblock %}">{% templatetag openvariable %} blogpage.title {% templatetag closevariable %}</a></strong><br />
-              <small>Revised: {% templatetag openvariable %} blogpage.latest_revision_created_at {% templatetag closevariable %}</small><br />
-              {% templatetag openblock %} if blogpage.author {% templatetag closeblock %}
-                <p>By {% templatetag openvariable %} blogpage.author.profile {% templatetag closevariable %}</p>
-              {% templatetag openblock %} endif {% templatetag closeblock %}
+              <strong><a href="{% pageurl blogpage %}">{{ blogpage.title }}</a></strong><br />
+              <small>Revised: {{ blogpage.latest_revision_created_at }}</small><br />
+              {% if blogpage.author %}
+                <p>By {{ blogpage.author.profile }}</p>
+              {% endif %}
           </p>
 
-    {% templatetag openblock %} empty {% templatetag closeblock %}
+    {% empty %}
         No pages found with that tag.
-    {% templatetag openblock %} endfor {% templatetag closeblock %}
+    {% endfor %}
 
-{% templatetag openblock %} endblock {% templatetag closeblock %}
+{% endblock %}
+{% endverbatim %}

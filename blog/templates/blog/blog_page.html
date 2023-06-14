@@ -1,46 +1,48 @@
-{% templatetag openblock %} extends "base.html" {% templatetag closeblock %}
+{% verbatim %}
+{% extends "base.html" %}
 
-{% templatetag openblock %} load wagtailcore_tags wagtailimages_tags {% templatetag closeblock %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
-{% templatetag openblock %} block body_class {% templatetag closeblock %}template-blogpage{% templatetag openblock %} endblock {% templatetag closeblock %}
+{% block body_class %}template-blogpage{% endblock %}
 
-{% templatetag openblock %} block content {% templatetag closeblock %}
-    <h1>{% templatetag openvariable %} page.title {% templatetag closevariable %}</h1>
-    <p class="meta">{% templatetag openvariable %} page.date {% templatetag closevariable %}</p>
+{% block content %}
+    <h1>{{ page.title }}</h1>
+    <p class="meta">{{ page.date }}</p>
 
-    {% templatetag openblock %} with categories=page.categories.all {% templatetag closeblock %}
-        {% templatetag openblock %} if categories {% templatetag closeblock %}
+    {% with categories=page.categories.all %}
+        {% if categories %}
             <h3>Posted in:</h3>
             <ul>
-                {% templatetag openblock %} for category in categories {% templatetag closeblock %}
+                {% for category in categories %}
                     <li style="display: inline">
-                        {% templatetag openblock %} image category.icon fill-32x32 style="vertical-align: middle" {% templatetag closeblock %}
-                        {% templatetag openvariable %} category.name {% templatetag closevariable %}
+                        {% image category.icon fill-32x32 style="vertical-align: middle" %}
+                        {{ category.name }}
                     </li>
-                {% templatetag openblock %} endfor {% templatetag closeblock %}
+                {% endfor %}
             </ul>
-        {% templatetag openblock %} endif {% templatetag closeblock %}
-    {% templatetag openblock %} endwith {% templatetag closeblock %}
+        {% endif %}
+    {% endwith %}
 
-    <div class="intro">{% templatetag openvariable %} page.intro {% templatetag closevariable %}</div>
+    <div class="intro">{{ page.intro }}</div>
 
-    {% templatetag openvariable %} page.body|richtext {% templatetag closevariable %}
+    {{ page.body|richtext }}
 
-    {% templatetag openblock %} for item in page.gallery_images.all {% templatetag closeblock %}
+    {% for item in page.gallery_images.all %}
         <div style="float: left; margin: 10px">
-            {% templatetag openblock %} image item.image fill-320x240 {% templatetag closeblock %}
-            <p>{% templatetag openvariable %} item.caption {% templatetag closevariable %}</p>
+            {% image item.image fill-320x240 %}
+            <p>{{ item.caption }}</p>
         </div>
-    {% templatetag openblock %} endfor {% templatetag closeblock %}
+    {% endfor %}
 
-    <p><a href="{% templatetag openvariable %} page.get_parent.url {% templatetag closevariable %}">Return to blog</a></p>
+    <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
 
-    {% templatetag openblock %} if page.tags.all.count {% templatetag closeblock %}
+    {% if page.tags.all.count %}
         <div class="tags">
             <h3>Tags</h3>
-            {% templatetag openblock %} for tag in page.tags.all {% templatetag closeblock %}
-                <a href="{% templatetag openblock %} slugurl 'tags' {% templatetag closeblock %}?tag={% templatetag openvariable %} tag {% templatetag closevariable %}"><button type="button">{% templatetag openvariable %} tag {% templatetag closevariable %}</button></a>
-            {% templatetag openblock %} endfor {% templatetag closeblock %}
+            {% for tag in page.tags.all %}
+                <a href="{% slugurl 'tags' %}?tag={{ tag }}"><button type="button">{{ tag }}</button></a>
+            {% endfor %}
         </div>
-    {% templatetag openblock %} endif {% templatetag closeblock %}
-{% templatetag openblock %} endblock {% templatetag closeblock %}
+    {% endif %}
+{% endblock %}
+{% endverbatim %}

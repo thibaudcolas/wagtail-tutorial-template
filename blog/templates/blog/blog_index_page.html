@@ -1,25 +1,27 @@
-{% templatetag openblock %} extends "base.html" {% templatetag closeblock %}
+{% verbatim %}
+{% extends "base.html" %}
 
-{% templatetag openblock %} load wagtailcore_tags wagtailimages_tags {% templatetag closeblock %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
-{% templatetag openblock %} block body_class {% templatetag closeblock %}template-blogindexpage{% templatetag openblock %} endblock {% templatetag closeblock %}
+{% block body_class %}template-blogindexpage{% endblock %}
 
-{% templatetag openblock %} block content {% templatetag closeblock %}
-    <h1>{% templatetag openvariable %} page.title {% templatetag closevariable %}</h1>
+{% block content %}
+    <h1>{{ page.title }}</h1>
 
-    <div class="intro">{% templatetag openvariable %} page.intro|richtext {% templatetag closevariable %}</div>
+    <div class="intro">{{ page.intro|richtext }}</div>
 
-    {% templatetag openblock %} for post in page.get_children {% templatetag closeblock %}
-        {% templatetag openblock %} with post=post.specific {% templatetag closeblock %}
-            <h2><a href="{% templatetag openblock %} pageurl post {% templatetag closeblock %}">{% templatetag openvariable %} post.title {% templatetag closevariable %}</a></h2>
+    {% for post in page.get_children %}
+        {% with post=post.specific %}
+            <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
 
-            {% templatetag openblock %} with post.main_image as main_image {% templatetag closeblock %}
-                {% templatetag openblock %} if main_image {% templatetag closeblock %}{% templatetag openblock %} image main_image fill-160x100 {% templatetag closeblock %}{% templatetag openblock %} endif {% templatetag closeblock %}
-            {% templatetag openblock %} endwith {% templatetag closeblock %}
+            {% with post.main_image as main_image %}
+                {% if main_image %}{% image main_image fill-160x100 %}{% endif %}
+            {% endwith %}
 
-            <p>{% templatetag openvariable %} post.intro {% templatetag closevariable %}</p>
-            {% templatetag openvariable %} post.body|richtext {% templatetag closevariable %}
-        {% templatetag openblock %} endwith {% templatetag closeblock %}
-    {% templatetag openblock %} endfor {% templatetag closeblock %}
+            <p>{{ post.intro }}</p>
+            {{ post.body|richtext }}
+        {% endwith %}
+    {% endfor %}
 
-{% templatetag openblock %} endblock {% templatetag closeblock %}
+{% endblock %}
+{% endverbatim %}

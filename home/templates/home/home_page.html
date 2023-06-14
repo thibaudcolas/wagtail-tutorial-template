@@ -1,8 +1,10 @@
-{% templatetag openblock %} extends "base.html" {% templatetag closeblock %}
-{% templatetag openblock %} load wagtailcore_tags {% templatetag closeblock %}
+{% verbatim %}
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
 
-{% templatetag openblock %} block body_class {% templatetag closeblock %}template-homepage{% templatetag openblock %} endblock {% templatetag closeblock %}
+{% block body_class %}template-homepage{% endblock %}
 
-{% templatetag openblock %} block content {% templatetag closeblock %}
-  {% templatetag openvariable %} page.body|richtext {% templatetag closevariable %}
-{% templatetag openblock %} endblock content {% templatetag closeblock %}
+{% block content %}
+  {{ page.body|richtext }}
+{% endblock content %}
+{% endverbatim %}
