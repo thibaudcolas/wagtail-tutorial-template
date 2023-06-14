@@ -1,0 +1,25 @@
+{% templatetag openblock %} extends "base.html" {% templatetag closeblock %}
+
+{% templatetag openblock %} load wagtailcore_tags wagtailimages_tags {% templatetag closeblock %}
+
+{% templatetag openblock %} block body_class {% templatetag closeblock %}template-blogindexpage{% templatetag openblock %} endblock {% templatetag closeblock %}
+
+{% templatetag openblock %} block content {% templatetag closeblock %}
+    <h1>{% templatetag openvariable %} page.title {% templatetag closevariable %}</h1>
+
+    <div class="intro">{% templatetag openvariable %} page.intro|richtext {% templatetag closevariable %}</div>
+
+    {% templatetag openblock %} for post in page.get_children {% templatetag closeblock %}
+        {% templatetag openblock %} with post=post.specific {% templatetag closeblock %}
+            <h2><a href="{% templatetag openblock %} pageurl post {% templatetag closeblock %}">{% templatetag openvariable %} post.title {% templatetag closevariable %}</a></h2>
+
+            {% templatetag openblock %} with post.main_image as main_image {% templatetag closeblock %}
+                {% templatetag openblock %} if main_image {% templatetag closeblock %}{% templatetag openblock %} image main_image fill-160x100 {% templatetag closeblock %}{% templatetag openblock %} endif {% templatetag closeblock %}
+            {% templatetag openblock %} endwith {% templatetag closeblock %}
+
+            <p>{% templatetag openvariable %} post.intro {% templatetag closevariable %}</p>
+            {% templatetag openvariable %} post.body|richtext {% templatetag closevariable %}
+        {% templatetag openblock %} endwith {% templatetag closeblock %}
+    {% templatetag openblock %} endfor {% templatetag closeblock %}
+
+{% templatetag openblock %} endblock {% templatetag closeblock %}
