@@ -2,9 +2,15 @@
 
 A Wagtail project starter template – with the solution to Wagtail’s official [Your first Wagtail site](https://docs.wagtail.org/en/stable/getting_started/tutorial.html) tutorial.
 
-## Starting a new project with this template
+## Starting a new project
 
-Instructions for macOS / Linux:
+```bash
+wagtail start mysite --template=https://github.com/thibaudcolas/wagtail-tutorial-template/archive/main.zip
+```
+
+## Full starting instructions
+
+For macOS / Linux:
 
 ```bash
 python -m venv mysite/env
